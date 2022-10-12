@@ -25,7 +25,7 @@ const App = () => {
   return (
     <div className="App">
       <nav>
-        <h1 className="store-header">BloomTech's Trinkets</h1>
+        <h1 className="store-header">Anistesia's Trinkets</h1>
         <div className="nav-links">
           <NavLink exact to="/item-form">
             Add Item
@@ -48,7 +48,7 @@ const App = () => {
           render={props => <Item {...props} setItems={setItems} />}
         />
         <Route path="/item-form" component={ItemForm} />
-        <Route path="/item-update/:id" render={() => <UpdateForm  setItems={setItems} />} />
+        <Route path="/item-update/:id" render={() => <UpdateForm setItems={setItems} />} />
       </Switch>
     </div>
   );
