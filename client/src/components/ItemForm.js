@@ -16,7 +16,7 @@ const ItemForm = props => {
     ev.persist();
     let value = ev.target.value;
     if (ev.target.name === 'price') {
-      value = parseInt(value, 10);
+      value = Math.round(value * 100) / 100;
     }
 
     setItem({
@@ -27,6 +27,16 @@ const ItemForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    axios
+      .post(`http://localhost:3333/items`, item)
+      .then(res => {
+        props.setItem(res.data)
+        props.history.push(`/item-list`)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (

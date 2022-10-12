@@ -8,12 +8,16 @@ import ItemShipping from './ItemShipping';
 function Item(props) {
   const [item, setItem] = useState({});
   const { id } = props.match.params;
-  console.log(useParams())
+  // console.log(useParams())
 
-  useEffect(()=>{
-    axios.get(`http://localhost:3333/items/${id}`)
-      .then(res=>{
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3333/items/${id}`)
+      .then(res => {
         setItem(res.data);
+      })
+      .catch(err => {
+        console.log(err)
       });
   }, []);
 
@@ -22,7 +26,7 @@ function Item(props) {
   }
 
   const handleEditButton = () => {
-    props.history.push(`/item-update/${item.id}`)
+    props.history.push(`/item-update/${id}`)
   }
 
   //add onclick handler
@@ -32,13 +36,14 @@ function Item(props) {
 
   const handleDeleteButton = (e) => {
     e.preventDefault()
-    axios.delete(`http://localhost:3333/items/${item.id}`)
-        .then(res => {
-          console.log(res)
-          props.setItems(res.data);
-          props.history.push('/item-list')
-        })
-        .catch(err => console.log(err))
+
+    axios
+      .delete(`http://localhost:3333/items/${item.id}`)
+      .then(res => {
+        props.setItems(res.data);
+        props.history.push('/item-list')
+      })
+      .catch(err => console.log(err))
   }
 
   return (

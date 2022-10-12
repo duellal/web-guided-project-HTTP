@@ -12,27 +12,30 @@ const initialItem = {
 
 const UpdateForm = props => {
   const [item, setItem] = useState(initialItem);
-  
-  console.log("props in update item", props)
+
+  // console.log("props in update item", props)
   // console.log("useParams in update item", useParams())
 
   const { id } = useParams(); //instead of props.match.params
   const { push } = useHistory(); //instead of props.history.push
 
-//IDea to get our ID ?
+  //IDea to get our ID ?
   useEffect(() => {
-    axios.get(`http://localhost:3333/items/${id}`)
-        .then(res => {
-          // console.log(res);
-          setItem(res.data);
-        })
+    axios
+      .get(`http://localhost:3333/items/${id}`)
+      .then(res => {
+        setItem(res.data);
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, [])
 
   const changeHandler = ev => {
     ev.persist();
     let value = ev.target.value;
     if (ev.target.name === "price") {
-      value = parseInt(value, 10);
+      value = Math.round(value * 100) / 100
     }
 
     setItem({
@@ -43,12 +46,13 @@ const UpdateForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.put(`http://localhost:3333/items/${item.id}`, item)
-          .then(res => {
-            // console.log("response from PUT", res)
-            props.setItems(res.data);
-            push(`/item-list/${item.id}`);
-          })
+
+    axios
+      .put(`http://localhost:3333/items/${item.id}`, item)
+      .then(res => {
+        props.setItems(res.data);
+        push(`/item-list/${item.id}`);
+      })
   };
 
   return (
